@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKWebView POST Example</title>
+</head>
+<body>
+    <h1>WKWebView POST Example</h1>
+    <textarea id="postData" rows="4" cols="50">Enter data to send to server...</textarea><br>
+    <button onclick="sendData()">Send Data to Server</button>
+    <div id="response"></div>
+
+    <script>
+        function sendData() {
+            var postData = document.getElementById('postData').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:8080/post?param1=1211', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                alert(xhr.readyState)
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    var responseDiv = document.getElementById('response');
+                    alert(xhr.responseText)
+                    responseDiv.innerHTML = 'Server Response: ' + xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
