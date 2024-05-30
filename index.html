@@ -26,6 +26,7 @@
             sendData() 
         }
         function sendData() {
+            alert("111")
             // var postData = document.getElementById('postData').value;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'https://www.nbflix.com/api/system/playlist/202402290012', true);
@@ -35,7 +36,7 @@
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     var responseDiv = document.getElementById('response');
                     alert(xhr.responseText)
-                    responseDiv.innerHTML = 'Server Response: ' + xhr.responseText;
+                    responseDiv.innerHTML = 'Server Response: ' + xhr.responseText["msg"];
                 }
             };
             xhr.send();
