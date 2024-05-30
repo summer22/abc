@@ -28,7 +28,7 @@
         function sendData() {
             var postData = document.getElementById('postData').value;
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'myapp://localhost:8080/post?param1=1211', true);
+            xhr.open('GET', 'https://www.nbflix.com/api/system/playlist/202402290012', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
                 alert(xhr.readyState)
