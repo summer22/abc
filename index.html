@@ -36,6 +36,7 @@
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     var responseDiv = document.getElementById('response');
                     alert(xhr.responseText)
+                    console.log(xhr.responseText)
                     responseDiv.innerHTML = 'Server Response: ' + xhr.responseText["msg"];
                 }
             };
