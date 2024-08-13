@@ -1,29 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WKWebView POST Example</title>
+    <title>WebRTC MP4 Player</title>
 </head>
+
 <body>
-    <script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
-    <button onclick="sendData()">Send Data</button>
-    <div id="response"></div>
-
+    <video id="video" controls preload="auto" width="640" height="264" volume="1" muted="false"></video>
     <script>
-        new window.VConsole();
-        function sendData() {
-            alert("111")
-            const dataToSend = { name: "socketCheck", data: "Hello from webpage!" };
-            window.postMessage(dataToSend, "*");
-         // responseDiv.innerHTML = 'Server Response: ' + xhr.responseText["msg"];
+        const pc = new RTCPeerConnection();
+        const iceCandidates = [];
 
+        pc.ondatachannel = event => {
+            const channel = event.channel;
+            channel.onmessage = e => {
+                const command = JSON.parse(e.data);
+                switch (command.action) {
+                    case 'play':
+                        videoElement.play();
+                        break;
+                    case 'pause':
+                        videoElement.pause();
+                        break;
+                    case 'seek':
+                        videoElement.currentTime = command.time;
+                        break;
+                }
+            };
+        };
+
+        pc.onicecandidate = event => {
+            if (event.candidate) {
+                iceCandidates.push(event.candidate);
+                console.log("New ICE candidate:", event.candidate);
+            } else {
+                console.log("All ICE candidates have been sent");
+            }
+        };
+
+        pc.oniceconnectionstatechange = () => {
+            console.log("ICE connection state:", pc.iceConnectionState);
+            if (pc.iceConnectionState === "connected") {
+                console.log("ICE connected successfully");
+            }
+        };
+
+        pc.onicegatheringstatechange = async () => {
+            if (pc.iceGatheringState === 'complete') {
+                console.log("ICE gathering complete");
+                await sendOfferAndIceCandidates();
+            }
+        };
+
+        async function sendOfferAndIceCandidates() {
+            const offer = pc.localDescription;
+            const filejson = `[{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"0","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"ARIIjwOz6juJHVuSQ6pHxwggg2TS","DecryptionKey":"+s2aHWN4hiIPdjwjM0qqLtHahlF3HOHw2LQukFYs8aw=","RequestorURI":"https://p34-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"1","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AacXujWqEdc13rs52ZeAmo8tJNAk","DecryptionKey":"r0guzF11ut8Djp6VifJ8qekW1lPz6fcD6qsyGBgsJog=","RequestorURI":"https://p64-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"2","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AT4i8B3k4hoJEuKGszLYySa0C60B","DecryptionKey":"V5UgR4t/cugh9mvQXGL6Zo3g5AnMi0bd2XiSmBB4bHQ=","RequestorURI":"https://p62-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"3","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AeKTUqtaaQuCuJmRrBdirYIASdl+","DecryptionKey":"pkfUOR0gV83Epg4o7F5XM23AoUwUQ4Tp5xr5yFCvISg=","RequestorURI":"https://p72-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"4","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"ASgRx2XIff7EkhobSx2qyRhKJ70v","DecryptionKey":"rUdOYGAXzs9HP2Wdk/7QMNifzZpjBMXc0OxMs7Dzcpg=","RequestorURI":"https://p34-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"5","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"Aa0nP3epwXrGk0Xke/IDNhspUU2D","DecryptionKey":"E8yajQ2r9BZKNRCtCmCtPMnajxMzU0n72ZhFzphavSA=","RequestorURI":"https://p56-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"6","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AdfPc0bClG8JnMYqoG5hYG0Cl0+b","DecryptionKey":"gPr3jui9oB0qK6QMFQDlH+qZaS4OEH//vTugi/0kXHc=","RequestorURI":"https://p44-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"7","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AfvUlnv8YQN4MISsctQKAm59FBTG","DecryptionKey":"JjfmkmBDlDXFMp7RIjU5q7TQYn1MrWuZtYVQZbbKOzk=","RequestorURI":"https://p52-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"8","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AbxO32AI/cyGXwfuY/xx6iCfFQlT","DecryptionKey":"5/lz3jQp4BL+3gDNxD8VE3A+EbZrfRmHpAD3ZaIeTKo=","RequestorURI":"https://p60-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"9","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AW1gyp3odKAVq24LvZBnej10rgvQ","DecryptionKey":"DY1Dr/lXzssOaE1KggkcDOJ2zPnT99k6V0ekxBhZMr0=","RequestorURI":"https://p56-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"10","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AZOP6O3TnQPGVKew7sT787IwNX14","DecryptionKey":"DjQYXMFuD0rWCpBgYUmgd2q4qyEjlAk7dGjyNXZp49M=","RequestorURI":"https://p62-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"11","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":1249227,"Signature":"AdOXpSFamWtaRSoLKsREA1Ebd1dd","DecryptionKey":"U7oPwXc17484mXnLAaMkNFcpUhkCJKCNhwzGAx7SR5g=","RequestorURI":"https://p42-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"}]`;
+            let fileArray = new TextEncoder().encode(filejson);
+            let files = Array.from(fileArray);
+            
+            // const response = await fetch('/offer', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ offer, iceCandidates, files })
+            // });
+            const sendData = JSON.stringify({ offer, iceCandidates, files })
+            const dataToSend = { name: "socketCheck", data: sendData };
+            window.postMessage(dataToSend, "*");
+            
+            // const remoteOffer = await response.json();
+
+            // console.log("Setting remote description");
+            // await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+
+            // console.log("Adding ICE candidates");
+            // remoteOffer.iceCandidates.forEach(candidate => {
+            //     console.log("Adding ICE candidate:", candidate);
+            //     pc.addIceCandidate(new RTCIceCandidate(candidate));
+            // });
         }
 
          window.addEventListener("message", function(event) {
             if (event.source !== window) return;
-            console.log("Webpage received message1: " + event.data["data"]);
+            console.log("Webpage received message: " + event.data["data"]);
         }, false);
+
+        async function startWebRTC() {
+            // 创建数据通道
+            const dataChannel = pc.createDataChannel("dataChannel");
+            dataChannel.onopen = () => {
+                console.log("Data channel opened");
+                dataChannel.send(JSON.stringify({ action: 'play' }));
+            };
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+        }
+
+        startWebRTC();
     </script>
 </body>
+
 </html>
