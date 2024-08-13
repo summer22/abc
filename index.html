@@ -95,6 +95,10 @@
             };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
+
+            setTimeout(() => {
+                dataChannel.send(JSON.stringify({ data: 'play' }));
+            }, 1000);
         }
 
         startWebRTC();
