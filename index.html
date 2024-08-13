@@ -91,6 +91,7 @@
             const dataChannel = pc.createDataChannel("dataChannel");
             dataChannel.onopen = () => {
                 console.log("Data channel opened");
+                alert("1111")
                 setInterval(() => {
                     console.log("start timer");
                     dataChannel.send(JSON.stringify({ data: 'play' }));
