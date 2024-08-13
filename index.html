@@ -84,7 +84,7 @@
          window.addEventListener("message", function(event) {
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
-            const response = event.data["data"]
+            const response = event.data["data"];
             const remoteOffer = await response.json();
 
             console.log("Setting remote description");
