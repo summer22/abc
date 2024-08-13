@@ -118,7 +118,7 @@
          window.addEventListener("message", async function(event) {
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
-            const response = event.data["data"];
+            const response = event.data.data;
             if (response != undefined) {
                 try {
                     const remoteOffer = await JSON.parse(response);
