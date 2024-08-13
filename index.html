@@ -95,14 +95,15 @@
                 try {
                     const remoteOffer = JSON.parse(response);
                     const abc = JSON.parse(remoteOffer);
-                    await pc.setRemoteDescription(new RTCSessionDescription(abc.answer));
-        
-                    console.log("Adding ICE candidates");
-                    remoteOffer.iceCandidates.forEach(candidate => {
-                        console.log("Adding ICE candidate:", candidate);
-                        pc.addIceCandidate(new RTCIceCandidate(candidate));
-                    });
-                    
+                    if(abc.answer != undefined) {
+                        await pc.setRemoteDescription(new RTCSessionDescription(abc.answer));
+                        console.log("Adding ICE candidates");
+                        remoteOffer.iceCandidates.forEach(candidate => {
+                            console.log("Adding ICE candidate:", candidate);
+                            pc.addIceCandidate(new RTCIceCandidate(candidate));
+                        });
+                    }
+                   
                 } catch (e) {
                   console.error("Error parsing JSON:", e);
                 }
