@@ -121,7 +121,7 @@
             const response = event.data["data"];
             const remoteOffer = JSON.parse(response);//response.json();
 
-            console.log("Setting remote description: " + remoteOffer.answer);
+            console.log("Setting remote description: " + remoteOffer);
             await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
 
             console.log("Adding ICE candidates");
