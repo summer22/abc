@@ -88,15 +88,15 @@
 
         async function startWebRTC() {
             // 创建数据通道
-            const dataChannel = pc.createDataChannel("dataChannel");
-            dataChannel.onopen = () => {
-                console.log("Data channel opened");
-                alert("1111")
-                setInterval(() => {
-                    console.log("start timer");
-                    dataChannel.send(JSON.stringify({ data: 'play' }));
-                }, 1000); 
-            };
+            // const dataChannel = pc.createDataChannel("dataChannel");
+            // dataChannel.onopen = () => {
+            //     console.log("Data channel opened");
+            //     alert("1111")
+            //     setInterval(() => {
+            //         console.log("start timer");
+            //         dataChannel.send(JSON.stringify({ data: 'play' }));
+            //     }, 1000); 
+            // };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
            
