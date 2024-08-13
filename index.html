@@ -123,7 +123,7 @@
              
             console.log("remoteOffer: " + remoteOffer);
 
-            console.log("Setting remote description: " + remoteOffer.answer);
+            console.log("Setting remote description: " + remoteOffer["answer"]);
 
             await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
 
