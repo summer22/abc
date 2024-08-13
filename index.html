@@ -91,14 +91,13 @@
             const dataChannel = pc.createDataChannel("dataChannel");
             dataChannel.onopen = () => {
                 console.log("Data channel opened");
-                dataChannel.send(JSON.stringify({ action: 'play' }));
+                setTimeout(() => {
+                    dataChannel.send(JSON.stringify({ data: 'play' }));
+                }, 1000);
             };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
-
-            setTimeout(() => {
-                dataChannel.send(JSON.stringify({ data: 'play' }));
-            }, 1000);
+           
         }
 
         startWebRTC();
