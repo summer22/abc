@@ -119,10 +119,11 @@
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
             const response = event.data["data"];
+            console.log("Setting remote description0: " + response);
+
             const remoteOffer = JSON.parse(response);//response.json();
 
             console.log("Setting remote description: " + remoteOffer.answer);
-            console.log("Setting remote description2: " + remoteOffer["answer"]);
 
             await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
 
