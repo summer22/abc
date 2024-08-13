@@ -119,9 +119,9 @@
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
             const response = event.data["data"];
-            console.log("Setting remote description0: " + response);
-
-            const remoteOffer = JSON.parse(response);//response.json();
+            const remoteOffer = JSON.parse(response);
+             
+            console.log("remoteOffer: " + remoteOffer);
 
             console.log("Setting remote description: " + remoteOffer.answer);
 
