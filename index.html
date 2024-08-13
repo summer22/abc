@@ -92,6 +92,7 @@
             dataChannel.onopen = () => {
                 console.log("Data channel opened");
                 setTimeout(() => {
+                    console.log("start timer");
                     dataChannel.send(JSON.stringify({ data: 'play' }));
                 }, 1000);
             };
