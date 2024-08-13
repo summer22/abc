@@ -122,10 +122,13 @@
             if (response != undefined) {
                 try {
                     const remoteOffer = JSON.parse(response);
-                    console.log("Remote Offer Keys0:", remoteOffer);
-                    console.log("Remote Offer Keys1:", remoteOffer.answer);
 
-                    await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+                    const abc = JSON.parse(remoteOffer);
+
+                    console.log("Remote Offer Keys0:", abc);
+                    console.log("Remote Offer Keys1:", abc.answer);
+
+                    await pc.setRemoteDescription(new RTCSessionDescription(abc.answer));
         
                     console.log("Adding ICE candidates");
                     remoteOffer.iceCandidates.forEach(candidate => {
