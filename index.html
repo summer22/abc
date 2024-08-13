@@ -121,7 +121,7 @@
             const response = event.data["data"];
             const remoteOffer = JSON.parse(response);//response.json();
 
-            console.log("Setting remote description: " + remoteOffer);
+            console.log("Setting remote description: " + remoteOffer.answer);
             console.log("Setting remote description2: " + remoteOffer["answer"]);
 
             await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
