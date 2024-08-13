@@ -17,7 +17,6 @@
             const channel = event.channel;
             channel.onmessage = e => {
                 const command = JSON.parse(e.data);
-                console.log("channel.onmessage:", command.action);
                 switch (command.action) {
                     case 'play':
                         videoElement.play();
@@ -79,6 +78,9 @@
                     console.log("start timer");
                     dataChannel.send(JSON.stringify({ data: 'play' }));
                 }, 1000); 
+            };
+            dataChannel.onmessage = function(event) {
+                console.log("Received message:", event.data);
             };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
