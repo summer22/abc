@@ -14,9 +14,16 @@
         new window.VConsole();
         function sendData() {
             alert("111")
+            const dataToSend = { name: "socketCheck", data: "Hello from webpage!" };
+            window.postMessage(dataToSend, "*");
          // responseDiv.innerHTML = 'Server Response: ' + xhr.responseText["msg"];
 
         }
+
+         window.addEventListener("message", function(event) {
+            if (event.source !== window) return;
+            console.log("Webpage received message: " + event.data.message);
+        }, false);
     </script>
 </body>
 </html>
