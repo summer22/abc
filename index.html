@@ -122,8 +122,7 @@
             if (response != undefined) {
                 try {
                     const remoteOffer = JSON.parse(response);
-                
-                    console.log(remoteOffer.answer);
+                    console.log("Remote Offer Keys:", Object.keys(remoteOffer));
 
                     await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
         
