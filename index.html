@@ -121,11 +121,11 @@
             const response = event.data.data;
             if (response != undefined) {
                 try {
-                    const remoteOffer = await JSON.parse(response);
-                    // 访问对象中的数据
-                    console.log("Answer type:", remoteOffer.answer.type);
-                    console.log("SDP:", remoteOffer.answer.sdp);
-                    console.log("Setting remote description: " +  remoteOffer.answer);
+                    const remoteOffer = JSON.parse(response);
+                    // // 访问对象中的数据
+                    // console.log("Answer type:", remoteOffer.answer.type);
+                    // console.log("SDP:", remoteOffer.answer.sdp);
+                    // console.log("Setting remote description: " +  remoteOffer.answer);
                  
                 } catch (e) {
                   console.error("Error parsing JSON:", e);
