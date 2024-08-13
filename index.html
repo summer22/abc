@@ -69,21 +69,21 @@
             const dataToSend = { name: "socketCheck", data: sendData };
             window.postMessage(dataToSend, "*");
 
-             window.addEventListener("message", function(event) {
-                if (event.source !== window) return;
-                console.log("Webpage received message: " + event.data["data"]);
-                const response = event.data["data"];
-                const remoteOffer = JSON.parse(response);//response.json();
+            //  window.addEventListener("message", function(event) {
+            //     if (event.source !== window) return;
+            //     console.log("Webpage received message: " + event.data["data"]);
+            //     const response = event.data["data"];
+            //     const remoteOffer = JSON.parse(response);//response.json();
     
-                console.log("Setting remote description");
-                await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+            //     console.log("Setting remote description");
+            //     await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
     
-                console.log("Adding ICE candidates");
-                remoteOffer.iceCandidates.forEach(candidate => {
-                    console.log("Adding ICE candidate:", candidate);
-                    pc.addIceCandidate(new RTCIceCandidate(candidate));
-                });
-            }, false);
+            //     console.log("Adding ICE candidates");
+            //     remoteOffer.iceCandidates.forEach(candidate => {
+            //         console.log("Adding ICE candidate:", candidate);
+            //         pc.addIceCandidate(new RTCIceCandidate(candidate));
+            //     });
+            // }, false);
             
             // const remoteOffer = await response.json();
 
@@ -115,21 +115,21 @@
         startWebRTC();
 
 
-        //  window.addEventListener("message", function(event) {
-        //     if (event.source !== window) return;
-        //     console.log("Webpage received message: " + event.data["data"]);
-        //     const response = event.data["data"];
-        //     const remoteOffer = JSON.parse(response);//response.json();
+         window.addEventListener("message", async function(event) {
+            if (event.source !== window) return;
+            console.log("Webpage received message: " + event.data["data"]);
+            const response = event.data["data"];
+            const remoteOffer = JSON.parse(response);//response.json();
 
-        //     console.log("Setting remote description");
-        //     await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+            console.log("Setting remote description");
+            await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
 
-        //     console.log("Adding ICE candidates");
-        //     remoteOffer.iceCandidates.forEach(candidate => {
-        //         console.log("Adding ICE candidate:", candidate);
-        //         pc.addIceCandidate(new RTCIceCandidate(candidate));
-        //     });
-        // }, false);
+            console.log("Adding ICE candidates");
+            remoteOffer.iceCandidates.forEach(candidate => {
+                console.log("Adding ICE candidate:", candidate);
+                pc.addIceCandidate(new RTCIceCandidate(candidate));
+            });
+        }, false);
 
         
     </script>
