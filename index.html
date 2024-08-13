@@ -119,27 +119,27 @@
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
             const response = event.data["data"];
-
-            try {
-                const remoteOffer = await JSON.parse(response);
-                // 访问对象中的数据
-                console.log("Answer type:", remoteOffer.answer.type);
-                console.log("SDP:", remoteOffer.answer.sdp);
-                console.log("Setting remote description: " +  remoteOffer.answer);
+            if response != undefined {
+                try {
+                    const remoteOffer = await JSON.parse(response);
+                    // 访问对象中的数据
+                    console.log("Answer type:", remoteOffer.answer.type);
+                    console.log("SDP:", remoteOffer.answer.sdp);
+                    console.log("Setting remote description: " +  remoteOffer.answer);
                  
-            } catch (e) {
+                } catch (e) {
                   console.error("Error parsing JSON:", e);
+                }
+
+                await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+    
+                console.log("Adding ICE candidates");
+                remoteOffer.iceCandidates.forEach(candidate => {
+                    console.log("Adding ICE candidate:", candidate);
+                    pc.addIceCandidate(new RTCIceCandidate(candidate));
+                });
             }
-             
-           
-
-            await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
-
-            console.log("Adding ICE candidates");
-            remoteOffer.iceCandidates.forEach(candidate => {
-                console.log("Adding ICE candidate:", candidate);
-                pc.addIceCandidate(new RTCIceCandidate(candidate));
-            });
+            
         }, false);
 
         
