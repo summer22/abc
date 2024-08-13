@@ -22,7 +22,8 @@
 
          window.addEventListener("message", function(event) {
             if (event.source !== window) return;
-            console.log("Webpage received message: " + event.data.message);
+            console.log("Webpage received message1: " + event.data);
+            console.log("Webpage received message2: " + event.data.message);
         }, false);
     </script>
 </body>
