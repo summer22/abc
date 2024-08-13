@@ -119,7 +119,7 @@
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
             const response = event.data["data"];
-            if response != undefined {
+            if (response != undefined) {
                 try {
                     const remoteOffer = await JSON.parse(response);
                     // 访问对象中的数据
