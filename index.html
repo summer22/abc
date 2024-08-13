@@ -91,10 +91,10 @@
             const dataChannel = pc.createDataChannel("dataChannel");
             dataChannel.onopen = () => {
                 console.log("Data channel opened");
-                setTimeout(() => {
+                setInterval(() => {
                     console.log("start timer");
                     dataChannel.send(JSON.stringify({ data: 'play' }));
-                }, 1000);
+                }, 1000); 
             };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
