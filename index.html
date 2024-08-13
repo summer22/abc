@@ -119,11 +119,19 @@
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
             const response = event.data["data"];
-            const remoteOffer = await JSON.parse(response);
-             
-            console.log("remoteOffer: " + remoteOffer);
 
-            console.log("Setting remote description: " + remoteOffer["answer"]);
+            try {
+                const remoteOffer = await JSON.parse(response);
+                // 访问对象中的数据
+                console.log("Answer type:", remoteOffer.answer.type);
+                console.log("SDP:", remoteOffer.answer.sdp);
+                console.log("Setting remote description: " +  remoteOffer.answer);
+                 
+            } catch (e) {
+                  console.error("Error parsing JSON:", e);
+            }
+             
+           
 
             await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
 
