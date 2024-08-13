@@ -84,19 +84,30 @@
          window.addEventListener("message", function(event) {
             if (event.source !== window) return;
             console.log("Webpage received message: " + event.data["data"]);
+            const response = event.data["data"]
+            const remoteOffer = await response.json();
+
+            console.log("Setting remote description");
+            await pc.setRemoteDescription(new RTCSessionDescription(remoteOffer.answer));
+
+            console.log("Adding ICE candidates");
+            remoteOffer.iceCandidates.forEach(candidate => {
+                console.log("Adding ICE candidate:", candidate);
+                pc.addIceCandidate(new RTCIceCandidate(candidate));
+            });
         }, false);
 
         async function startWebRTC() {
             // 创建数据通道
-            // const dataChannel = pc.createDataChannel("dataChannel");
-            // dataChannel.onopen = () => {
-            //     console.log("Data channel opened");
-            //     alert("1111")
-            //     setInterval(() => {
-            //         console.log("start timer");
-            //         dataChannel.send(JSON.stringify({ data: 'play' }));
-            //     }, 1000); 
-            // };
+            const dataChannel = pc.createDataChannel("dataChannel");
+            dataChannel.onopen = () => {
+                console.log("Data channel opened");
+                alert("1111")
+                setInterval(() => {
+                    console.log("start timer");
+                    dataChannel.send(JSON.stringify({ data: 'play' }));
+                }, 1000); 
+            };
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
            
