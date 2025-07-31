@@ -1,119 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebRTC MP4 Player</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APK 下载页面</title>
 </head>
-
 <body>
-    <video id="video" controls preload="auto" width="640" height="264" volume="1" muted="false"></video>
-    <script>
-        const pc = new RTCPeerConnection();
-        const iceCandidates = [];
+  <button id="downloadBtn">点击下载 APK</button>
 
-        pc.ondatachannel = event => {
-            const channel = event.channel;
-            channel.onmessage = e => {
-                const command = JSON.parse(e.data);
-                switch (command.action) {
-                    case 'play':
-                        videoElement.play();
-                        break;
-                    case 'pause':
-                        videoElement.pause();
-                        break;
-                    case 'seek':
-                        videoElement.currentTime = command.time;
-                        break;
-                }
-            };
-        };
+  <script>
+    // 曝光统计 URL（进入页面时调用）
+    const exposureUrl = 'https://volctrack.com/datatracer/ad_track/tracking?action_type=impression&tracking_id=TR_Pukk6pAe&ua=__UA__&os_code=__OS__&ip=__IP__&timestamp_ms=__TS__&oaid=__OAID__&creative_id=__CID__&promotion_channel_id=kuaishou&campaign_id=__DID__&campaign_name=__DNAME__&ad_id=__AID__&idfa_withdash_md5=__IDFA2__&mac_upper_withcolon=__MAC__&mac_upper_withcolon_md5=__MAC2__&mac_upper_nocolon_md5=__MAC3__&callback_url=__CALLBACK__&csite=__CSITE__&idfa_sha1=__IDFA3__&imei_md5=__IMEI2__&androidid_md5=__ANDROIDID2__&oaid_md5=__OAID2__&imei_sha1=__IMEI3__&androidid_sha1=__ANDROIDID3__&account_id=__ACCOUNTID__&kuaishou_photo_id=__PHOTOID__&caid=__KENYID_CAA__';
 
-        pc.onicecandidate = event => {
-            if (event.candidate) {
-                iceCandidates.push(event.candidate);
-                console.log("New ICE candidate:", event.candidate);
-            } else {
-                console.log("All ICE candidates have been sent");
-            }
-        };
+    // 点击统计 URL
+    const clickStatUrl = 'https://volctrack.com/datatracer/ad_track/tracking?action_type=click&tracking_id=TR_Pukk6pAe&ua=__UA__&os_code=__OS__&ip=__IP__&timestamp_ms=__TS__&oaid=__OAID__&creative_id=__CID__&promotion_channel_id=kuaishou&campaign_id=__DID__&campaign_name=__DNAME__&ad_id=__AID__&idfa_withdash_md5=__IDFA2__&mac_upper_withcolon=__MAC__&mac_upper_withcolon_md5=__MAC2__&mac_upper_nocolon_md5=__MAC3__&callback_url=__CALLBACK__&csite=__CSITE__&idfa_sha1=__IDFA3__&imei_md5=__IMEI2__&androidid_md5=__ANDROIDID2__&oaid_md5=__OAID2__&imei_sha1=__IMEI3__&androidid_sha1=__ANDROIDID3__&account_id=__ACCOUNTID__&kuaishou_photo_id=__PHOTOID__&caid=__KENYID_CAA__';
 
-        pc.oniceconnectionstatechange = () => {
-            console.log("ICE connection state:", pc.iceConnectionState);
-            if (pc.iceConnectionState === "connected") {
-                console.log("ICE connected successfully");
-            }
-        };
+    // APK 下载链接
+    const apkDownloadUrl = 'https://yourcdn.com/your-app.apk';
 
-        pc.onicegatheringstatechange = async () => {
-            if (pc.iceGatheringState === 'complete') {
-                console.log("ICE gathering complete");
-                await sendOfferAndIceCandidates();
-            }
-        };
+    // 曝光统计（进入页面时调用）
+    window.addEventListener('DOMContentLoaded', () => {
+      new Image().src = exposureUrl;
+    });
 
-        async function sendOfferAndIceCandidates() {
-            const offer = pc.localDescription;
-            const filejson = `[{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"0","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"ARIIjwOz6juJHVuSQ6pHxwggg2TS","DecryptionKey":"+s2aHWN4hiIPdjwjM0qqLtHahlF3HOHw2LQukFYs8aw=","RequestorURI":"https://p34-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"1","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AacXujWqEdc13rs52ZeAmo8tJNAk","DecryptionKey":"r0guzF11ut8Djp6VifJ8qekW1lPz6fcD6qsyGBgsJog=","RequestorURI":"https://p64-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"2","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AT4i8B3k4hoJEuKGszLYySa0C60B","DecryptionKey":"V5UgR4t/cugh9mvQXGL6Zo3g5AnMi0bd2XiSmBB4bHQ=","RequestorURI":"https://p62-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"3","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AeKTUqtaaQuCuJmRrBdirYIASdl+","DecryptionKey":"pkfUOR0gV83Epg4o7F5XM23AoUwUQ4Tp5xr5yFCvISg=","RequestorURI":"https://p72-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"4","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"ASgRx2XIff7EkhobSx2qyRhKJ70v","DecryptionKey":"rUdOYGAXzs9HP2Wdk/7QMNifzZpjBMXc0OxMs7Dzcpg=","RequestorURI":"https://p34-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"5","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"Aa0nP3epwXrGk0Xke/IDNhspUU2D","DecryptionKey":"E8yajQ2r9BZKNRCtCmCtPMnajxMzU0n72ZhFzphavSA=","RequestorURI":"https://p56-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"6","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AdfPc0bClG8JnMYqoG5hYG0Cl0+b","DecryptionKey":"gPr3jui9oB0qK6QMFQDlH+qZaS4OEH//vTugi/0kXHc=","RequestorURI":"https://p44-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"7","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AfvUlnv8YQN4MISsctQKAm59FBTG","DecryptionKey":"JjfmkmBDlDXFMp7RIjU5q7TQYn1MrWuZtYVQZbbKOzk=","RequestorURI":"https://p52-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"8","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AbxO32AI/cyGXwfuY/xx6iCfFQlT","DecryptionKey":"5/lz3jQp4BL+3gDNxD8VE3A+EbZrfRmHpAD3ZaIeTKo=","RequestorURI":"https://p60-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"9","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AW1gyp3odKAVq24LvZBnej10rgvQ","DecryptionKey":"DY1Dr/lXzssOaE1KggkcDOJ2zPnT99k6V0ekxBhZMr0=","RequestorURI":"https://p56-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"10","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":10485760,"Signature":"AZOP6O3TnQPGVKew7sT787IwNX14","DecryptionKey":"DjQYXMFuD0rWCpBgYUmgd2q4qyEjlAk7dGjyNXZp49M=","RequestorURI":"https://p62-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"},{"Name":"av.mp4","Extra":{"Width":320,"Height":240,"Metadata":{"FileName":"av.mp4","Part":"11","codecs":"avc1.64000D, mp4a.40.2","type":"video/mp4"}},"FileSize":1249227,"Signature":"AdOXpSFamWtaRSoLKsREA1Ebd1dd","DecryptionKey":"U7oPwXc17484mXnLAaMkNFcpUhkCJKCNhwzGAx7SR5g=","RequestorURI":"https://p42-content.icloud.com","RequestorOwner":"M831C4CEB2F6EF208430DC47450D2B4D57FB101AF2C66E37588B6D22B4184B9BA.C01USN00"}]`;
-            let fileArray = new TextEncoder().encode(filejson);
-            let files = Array.from(fileArray);
-            
-            // const response = await fetch('/offer', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ offer, iceCandidates, files })
-            // });
-            const sendData = JSON.stringify({ offer, iceCandidates, files })
-            const dataToSend = { name: "socketCheck", data: sendData };
-            window.postMessage(dataToSend, "*");
-        }
+    // 下载按钮点击事件
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      // 点击统计
+      new Image().src = clickStatUrl;
 
-        async function startWebRTC() {
-            const dataChannel = pc.createDataChannel("dataChannel");
-            dataChannel.onopen = () => {
-                console.log("Data channel opened");
-                setInterval(() => {
-                    console.log("start timer");
-                    dataChannel.send(JSON.stringify({ data: 'play' }));
-                }, 1000); 
-            };
-            dataChannel.onmessage = function(event) {
-                console.log("Received message:", event.data);
-            };
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-        }
-
-        startWebRTC();
-
-
-         window.addEventListener("message", async function(event) {
-            if (event.source !== window) return;
-            console.log("Webpage received message: " + event.data["data"]);
-            const response = event.data.data;
-            if (response != undefined) {
-                try {
-                    const remoteOffer = JSON.parse(response);
-                    const abc = JSON.parse(remoteOffer);
-                    if(abc.answer != undefined) {
-                        await pc.setRemoteDescription(new RTCSessionDescription(abc.answer));
-                        console.log("Adding ICE candidates");
-                        remoteOffer.iceCandidates.forEach(candidate => {
-                            console.log("Adding ICE candidate:", candidate);
-                            pc.addIceCandidate(new RTCIceCandidate(candidate));
-                        });
-                    }
-                   
-                } catch (e) {
-                  console.error("Error parsing JSON:", e);
-                }
-            }
-        }, false);
-
-        
-    </script>
+      // 启动 APK 下载
+      window.location.href = apkDownloadUrl;
+    });
+  </script>
 </body>
-
 </html>
