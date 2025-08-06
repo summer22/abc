@@ -18,6 +18,9 @@
       id: "usr1cncto7khn144",
       data: {},
       selector: '#downloadBtn',
+      auto:true,
+      timeout:2000,
+      lazy:false
       useOpenInBrowerTips: "default",
       proxyOpenDownload: function (defaultAction, LinkInstance){
         if (LinkInstance.solution.type === "scheme"){
@@ -25,6 +28,8 @@
           if (ULink.isWechat || ULink.isQQ) {
             // 在qq或者微信环境执行内置逻辑，具体内置逻辑为:当设置了useOpenInBrowerTips字段时，qq&&微信&&scheme时，启用蒙层提示去浏览器打开
             defaultAction();
+          }else{
+            window.location.href = LinkInstance.solution.downloadUrl;
           }
         }
       },
@@ -48,13 +53,13 @@
     // });
 
     下载按钮点击事件
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-      // 点击统计
-      new Image().src = clickStatUrl;
+    // document.getElementById('downloadBtn').addEventListener('click', () => {
+    //   // 点击统计
+    //   new Image().src = clickStatUrl;
 
-      // 启动 APK 下载
-      window.location.href = apkDownloadUrl;
-    });
+    //   // 启动 APK 下载
+    //   window.location.href = apkDownloadUrl;
+    // });
   </script>
 </body>
 </html>
