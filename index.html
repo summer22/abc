@@ -17,7 +17,7 @@
     {
       id: "usr1cncto7khn144",
       data: {},
-      selector: "",
+      selector: '#downloadBtn',
       useOpenInBrowerTips: "default",
       proxyOpenDownload: function (defaultAction, LinkInstance){
         if (LinkInstance.solution.type === "scheme"){
@@ -40,14 +40,14 @@
     const clickStatUrl = 'https://volctrack.com/s/9XjYlPa3';
 
     // APK 下载链接
-    const apkDownloadUrl = 'https://assert.jinsetiyu.cn/apk/jinse.apk';
+    const apkDownloadUrl = 'qiuhs://open';
 
     // 曝光统计（进入页面时调用）
-    window.addEventListener('DOMContentLoaded', () => {
-      new Image().src = exposureUrl;
-    });
+    // window.addEventListener('DOMContentLoaded', () => {
+    //   new Image().src = exposureUrl;
+    // });
 
-    // 下载按钮点击事件
+    下载按钮点击事件
     document.getElementById('downloadBtn').addEventListener('click', () => {
       // 点击统计
       new Image().src = clickStatUrl;
